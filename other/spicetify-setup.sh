@@ -9,8 +9,8 @@ set -e
 # This script should be executed only after logging into spotify app.
 
 if [ ! -f "$HOME/.config/spotify/prefs" ]; then
-    echo "prefs file has not been generated, please log into spotify account"
-    exit 0
+  echo "prefs file has not been generated, please log into spotify account"
+  exit 0
 fi
 
 # Before applying Spicetify, you need to gain write permission on Spotify files
