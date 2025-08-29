@@ -1,0 +1,14 @@
+[Desktop Entry]
+Terminal=false
+Name=Okular
+GenericName=Document Viewer
+Comment=Universal document viewer
+Exec=env QT_SCALE_FACTOR=1.2 okular %U
+Icon=okular
+Type=Application
+X-DocPath=okular/index.html
+InitialPreference=7
+Categories=Qt;KDE;Graphics;Office;Viewer;
+MimeType=application/vnd.kde.okular-archive;application/x-cbz;application/x-cbr;application/x-cbt;application/x-cb7;image/vnd.djvu;application/x-dvi;application/x-gzdvi;application/x-bzdvi;application/epub+zip;image/fax-g3;image/g3fax;application/x-fictionbook+xml;application/postscript;image/x-eps;application/x-gzpostscript;application/x-bzpostscript;image/x-gzeps;image/x-bzeps;image/bmp;image/x-dds;image/x-eps;image/x-exr;image/gif;image/x-hdr;image/x-ico;image/jp2;image/jpeg;video/x-mng;image/x-portable-bitmap;image/x-pcx;image/x-portable-graymap;image/png;image/x-portable-pixmap;image/x-psd;image/x-rgb;image/x-tga;image/tiff;image/x-xbitmap;image/x-xcf;image/x-xpixmap;image/x-gzeps;image/x-bzeps;image/avif;image/heif;image/webp;image/jxl;text/markdown;application/x-mobipocket-ebook;application/pdf;application/x-gzpdf;application/x-bzpdf;application/x-wwf;image/tiff;text/plain;application/oxps;application/vnd.ms-xpsdocument;
+X-DBUS-ServiceName=org.kde.okular
+StartupWMClass=okular
