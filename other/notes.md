@@ -4,3 +4,4 @@
 
 - Space Rangers Launch Options:   `env -u SDL_VIDEODRIVER %command%`
 
+- Configure language specific settings in VS Code: `Ctrl+Shift+P` -> `workbench.action.configureLanguageBasedSettings` and select language

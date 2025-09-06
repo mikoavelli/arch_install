@@ -6,6 +6,8 @@
 
 set -e
 
+yay -S --needed --noconfirm spicetify-cli
+
 # This script should be executed only after logging into spotify app.
 
 if [ ! -f "$HOME/.config/spotify/prefs" ]; then

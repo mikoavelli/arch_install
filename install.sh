@@ -82,7 +82,7 @@ AUR_PACKAGES=(
   gdm-settings
   gnome-shell-extension-just-perfection-desktop
   morewaita-icon-theme
-  spicetify
+  spicetify-cli
   spotify
   visual-studio-code-bin
 )
