@@ -39,12 +39,15 @@ ESSENTIAL_PACKAGES=(
   bash-completion
   bat
   dosfstools
+  ffmpegthumbnailer
   firefox
+  flatpak
   fwupd
   git
   gst-plugins-bad
   gst-plugins-base
   gst-plugins-ugly
+  inter-font
   lazygit
   less
   man
@@ -52,17 +55,20 @@ ESSENTIAL_PACKAGES=(
   noto-fonts-cjk
   noto-fonts-emoji
   ntfs-3g
-  okular
   power-profiles-daemon
   pwgen
+  reflector
   resources
   sbctl
   steam
   telegram-desktop
   tree
+  ttf-jetbrains-mono-nerd
   ufw
   vlc
-  vlc-plugins-all
+  vlc-plugin-ffmpeg
+  vlc-plugin-freetype
+  vlc-plugin-x264
   wl-clipboard
 )
 
@@ -80,11 +86,12 @@ LAZYVIM_DEPS=(
 
 AUR_PACKAGES=(
   gdm-settings
-  gnome-shell-extension-just-perfection-desktop
+  gnome-shell-extension-just-perfection-desktop-git
   morewaita-icon-theme
-  spicetify-cli
-  spotify
-  visual-studio-code-bin
+)
+
+FLATPAK_PACKAGES=(
+  org.kde.okular
 )
 
 echo "-> Starting Arch Linux Setup"
@@ -121,25 +128,17 @@ sudo pacman -S --needed --noconfirm \
   "${ESSENTIAL_PACKAGES[@]}" \
   "${LAZYVIM_DEPS[@]}"
 
+sudo flatpak install flathub -y \
+  "${FLATPAK_PACKAGES}"
+
+echo "-> Filter best Romania https mirrors with reflector"
+sudo reflector --country Romania --age 12 --protocol https --sort rate --save /etc/pacman.d/mirrorlist
+
 echo "-> Cloning LazyVim starter"
 if [ ! -d "$HOME/.config/nvim" ]; then
   git clone https://github.com/LazyVim/starter ~/.config/nvim
 else
   echo "--> Some nvim config already exists"
-fi
-
-echo "-> Installing 'ideapad' gnome extension"
-mkdir -p "$HOME/.local/share/gnome-shell/extensions/"
-if [ ! -d "$HOME/.local/share/gnome-shell/extensions/ideapad@laurento.frittella" ]; then
-  git clone https://github.com/laurento/gnome-shell-extension-ideapad.git "$HOME/.local/share/gnome-shell/extensions/ideapad@laurento.frittella"
-else
-  echo "--> 'ideapad extension already installed'"
-fi
-
-echo "-> Additional required setup for 'ideapad' extension"
-echo "%wheel ALL=(ALL) NOPASSWD: /usr/bin/tee /sys/bus/platform/drivers/ideapad_acpi/VPC????\:??/conservation_mode" | sudo tee /etc/sudoers.d/ideapad
-if ! grep -q "ideapad_laptop" /etc/modules; then
-  echo "ideapad_laptop" | sudo tee -a /etc/modules
 fi
 
 if ! command -v yay &>/dev/null; then
@@ -173,7 +172,17 @@ echo "-> Disabling some services .."
 sudo systemctl disable remote-fs.target avahi-daemon.service
 sudo systemctl mask remote-fs.target avahi-daemon.service
 
+echo "-> Temporary fix for changing keyboard layout on CapsLock (downgrading 'mutter' to 49.0.5)"
+sudo pacman -U --needed --noconfirm https://archive.archlinux.org/packages/m/mutter/mutter-49.0-5-x86_64.pkg.tar.zst
+
+echo "--> Add 'mutter' package to IgnorePkg"
+sudo sed -i '/^#IgnorePkg/ s/^#//' /etc/pacman.conf
+set +H
+sudo sed -i "/^IgnorePkg/!b; /mutter/b; s/$/ mutter/" /etc/pacman.conf
+set -H
+
 echo "-> Finalization ..."
+sudo pacman -Sc --noconfirm
 yay -Yc --noconfirm
 
 echo "-> Secure Boot setup with sbctl"
